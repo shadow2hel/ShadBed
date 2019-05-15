@@ -10,14 +10,16 @@ import java.util.TimerTask;
 public class TimeEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
+    private long period;
     private Timer timer;
     private TimerTask repeatedTask;
     private long lastTime;
     private ShadBed main;
 
-    public TimeEvent(ShadBed main){
+    public TimeEvent(ShadBed main, long period){
         this.main = main;
         lastTime = main.earth.getTime();
+        this.period = period;
         initiate();
     }
 
@@ -32,7 +34,7 @@ public class TimeEvent extends Event {
         };
         timer = new Timer("Day Timer");
         long delay  = 0L;
-        long period = 1000L * 60 * 2;
+        long time = period * 60 * 2;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 

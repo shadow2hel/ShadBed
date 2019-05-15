@@ -16,6 +16,7 @@ public class ShadBed extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         for(World world : getServer().getWorlds()){
             if(world.getEnvironment() == World.Environment.NORMAL){
                 earth = world;
@@ -32,7 +33,7 @@ public class ShadBed extends JavaPlugin {
         this.getCommand("sbchange").setExecutor(new CommandSBC(this));
         BedListener bl = new BedListener(this);
         getServer().getPluginManager().registerEvents(bl, this);
-        new TimeEvent(this);
+        new TimeEvent(this, 2000);
         getServer().getPluginManager().registerEvents(new DayListener(bl), this);
     }
 

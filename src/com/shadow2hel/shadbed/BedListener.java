@@ -1,6 +1,5 @@
 package com.shadow2hel.shadbed;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -34,13 +33,6 @@ public class BedListener implements Listener {
         boolean found = false;
         int beginIndex = 0;
         int lastIndex = 0;
-        for (Map.Entry<String, ChatColor> entry : CustomColors.getMap().entrySet()) {
-            String s = entry.getKey();
-            ChatColor color = entry.getValue();
-            if (text.contains(s)) {
-                text = text.replaceAll(s, "" + color);
-            }
-        }
         for(int i = 0; i < text.length(); i++) {
             char letter = text.charAt(i);
             if(letter == '%') {

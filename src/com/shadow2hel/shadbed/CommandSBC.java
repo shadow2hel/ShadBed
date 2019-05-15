@@ -33,9 +33,7 @@ public class CommandSBC implements TabExecutor {
                     return false;
                 } else {
                     String[] words = new String[arg3.length-1];
-                    for (int i = 1; i < arg3.length; i++) {
-                        words[i-1] = arg3[i];
-                    }
+                    System.arraycopy(arg3, 1, words, 0, arg3.length - 1);
                     String opt = arg3[0].toLowerCase();
                     switch(opt) {
                         case "percentage":
