@@ -22,6 +22,8 @@ public class DayListener implements Listener {
 
     @EventHandler
     public void onDayPassed(DayEvent event){
-        bl.oldPlayer = null;
+        for(WorldSleepCounter wrldsleeper : bl.wrldSleepers){
+            wrldsleeper.oldPlayer = null;
+        }
     }
 }

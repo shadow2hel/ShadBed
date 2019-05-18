@@ -1,5 +1,6 @@
 package com.shadow2hel.shadbed;
 
+import com.shadow2hel.shadylibrary.ShadyLibrary;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,7 @@ public class ShadBed extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        ShadyLibrary.setPlugin(this);
         for(World world : getServer().getWorlds()){
             if(world.getEnvironment() == World.Environment.NORMAL){
                 earth = world;
@@ -24,9 +25,13 @@ public class ShadBed extends JavaPlugin {
         }
         config.addDefault("PERCENTAGE_SLEEPING", 75);
         config.addDefault("Enabled", true);
-        config.addDefault("sleepMessage", "%player% is sleeping [%sleepers%/%total%]");
-        config.addDefault("leaveMessage", "%player% left the bed [%sleepers%/%total%]");
-        config.addDefault("skipMessage", "Skipping the night..");
+        config.addDefault("prefix", "[&7Shad&3Bed&r] ");
+        config.addDefault("sleepMessageNight", "%player% is sleeping [%sleepers%/%required%]");
+        config.addDefault("leaveMessageNight", "%player% left the bed [%sleepers%/%required%]");
+        config.addDefault("skipMessageNight", "Skipping the night..");
+        config.addDefault("sleepMessageStorm", "%player% is sleeping [%sleepers%/%required%]");
+        config.addDefault("leaveMessageStorm", "%player% left the bed [%sleepers%/%required%]");
+        config.addDefault("skipMessageStorm", "Skipping the thunderstorm..");
         config.options().copyDefaults();
         saveConfig();
         this.getCommand("sb").setExecutor(new CommandSB(this));

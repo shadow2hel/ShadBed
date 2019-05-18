@@ -50,10 +50,10 @@ public class CommandSBC implements TabExecutor {
                                 return false;
                             }
                             break;
-                        case "sleepmessage":
+                        case "sleepmessagenight":
                             if(words.length!=0){
                                 String textSleep = String.join(" ", words);
-                                main.getConfig().set("sleepMessage", textSleep);
+                                main.getConfig().set("sleepMessageNight", textSleep);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -61,20 +61,51 @@ public class CommandSBC implements TabExecutor {
                             }
 
                             break;
-                        case "leavemessage":
+                        case "leavemessagenight":
                             if(words.length!=0){
                                 String textLeave = String.join(" ", words);
-                                main.getConfig().set("leaveMessage", textLeave);
+                                main.getConfig().set("leaveMessageNight", textLeave);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
                                 return false;
                             }
                             break;
-                        case "skipmessage":
+                        case "skipmessagenight":
                             if(words.length!=0){
                                 String textSkip = String.join(" ", words);
-                                main.getConfig().set("skipMessage", textSkip);
+                                main.getConfig().set("skipMessageNight", textSkip);
+                                main.config.options().copyDefaults();
+                                main.saveConfig();
+                            } else {
+                                return false;
+                            }
+                            break;
+                        case "sleepmessagestorm":
+                            if(words.length!=0){
+                                String textSleep = String.join(" ", words);
+                                main.getConfig().set("sleepMessageStorm", textSleep);
+                                main.config.options().copyDefaults();
+                                main.saveConfig();
+                            } else {
+                                return false;
+                            }
+
+                            break;
+                        case "leavemessagestorm":
+                            if(words.length!=0){
+                                String textLeave = String.join(" ", words);
+                                main.getConfig().set("leaveMessageStorm", textLeave);
+                                main.config.options().copyDefaults();
+                                main.saveConfig();
+                            } else {
+                                return false;
+                            }
+                            break;
+                        case "skipmessagestorm":
+                            if(words.length!=0){
+                                String textSkip = String.join(" ", words);
+                                main.getConfig().set("skipMessageStorm", textSkip);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -97,7 +128,7 @@ public class CommandSBC implements TabExecutor {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         //create new array
         if(command.getLabel().equals("sbchange")) {
-            final String[] COMMANDS = {"sleepmessage", "skipmessage", "leavemessage", "percentage"};
+            final String[] COMMANDS = {"sleepmessageStorm", "skipmessageStorm", "leavemessageStorm", "sleepmessageNight", "skipmessageNight", "leavemessageNight", "percentage"};
             final List<String> completions = new ArrayList<>();
             //copy matches of first argument from list (ex: if first arg is 'm' will return just 'minecraft')
             if(strings.length>1){
