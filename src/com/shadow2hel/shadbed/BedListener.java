@@ -1,7 +1,7 @@
 package com.shadow2hel.shadbed;
 
-import com.shadow2hel.shadylibrary.ShadyLibrary;
 import com.shadow2hel.shadylibrary.util.StringUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class BedListener implements Listener {
                                     returnMessage += sleepers;
                                     break;
                                 case "%required%":
-                                    int perc = (int)((main.config.getDouble("PERCENTAGE_SLEEPING")/100) * (double) world.getPlayers().size());
+                                    int perc = (int) ((main.config.getDouble("PERCENTAGE_SLEEPING") / 100) * (double) world.getPlayers().size());
                                     returnMessage += perc;
                                 default:
                             }
@@ -112,6 +113,17 @@ public class BedListener implements Listener {
     }
 
     @EventHandler
+    private void onWeatherChange(WeatherChangeEvent event) {
+        for (WorldSleepCounter wrldSleeper : wrldSleepers) {
+            World world = wrldSleeper.world;
+            if (world == event.getWorld() && wrldSleeper.isBeingSkipped && event.toWeatherState()) {
+                wrldSleeper.isBeingSkipped = false;
+                Bukkit.broadcast("SkippinBitches", "*");
+            }
+        }
+    }
+
+    @EventHandler
     private void onPlayerBedEnter(PlayerBedEnterEvent event) {
         FileConfiguration config = main.config;
         if (isDay) {
@@ -122,18 +134,19 @@ public class BedListener implements Listener {
     }
 
     @EventHandler
-    private void onPlayerBedLeaveEvent(PlayerBedLeaveEvent event) {
-        for (WorldSleepCounter wrldsleeper : wrldSleepers) {
-            World world = wrldsleeper.world;
-            List<Player> players = world.getPlayers();
-            if (event.getPlayer().getWorld() == world) {
-                if (!isDay && wrldsleeper.counter >= 0) {
-                    wrldsleeper.counter--;
+    private void onPlayerBedLeaveEvent(final PlayerBedLeaveEvent event) {
+        for (final WorldSleepCounter wrldsleeper : this.wrldSleepers) {
+            final World world = wrldsleeper.world;
+            final List<Player> players = world.getPlayers();
+            if (!wrldsleeper.isBeingSkipped && event.getPlayer().getWorld() == world) {
+                if (!this.isDay && wrldsleeper.counter >= 0) {
+                    final WorldSleepCounter worldSleepCounter = wrldsleeper;
+                    --worldSleepCounter.counter;
                     if (wrldsleeper.oldPlayer != event.getPlayer()) {
                         if (!world.hasStorm()) {
-                            players.forEach(p -> p.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.LEAVENIGHT)));
+                            players.forEach(p -> p.sendMessage(this.ShadBedMessage(event.getPlayer(), SleepSetting.LEAVENIGHT)));
                         } else {
-                            players.forEach(p -> p.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.LEAVESTORM)));
+                            players.forEach(p -> p.sendMessage(this.ShadBedMessage(event.getPlayer(), SleepSetting.LEAVESTORM)));
                         }
                     }
                 }
@@ -142,30 +155,34 @@ public class BedListener implements Listener {
         }
     }
 
-    private void skipSomething(PlayerBedEnterEvent event){
+    private void skipSomething(PlayerBedEnterEvent event) {
         for (WorldSleepCounter wrldSleeper : wrldSleepers) {
             World world = wrldSleeper.world;
             List<Player> players = world.getPlayers();
 
-            if(world.hasStorm()){
-                if (event.getPlayer().getWorld() == world && event.getBedEnterResult() == BedEnterResult.OK) {
-                    wrldSleeper.counter++;
-                    if (wrldSleeper.oldPlayer != event.getPlayer()) {
-                        for (Player player : players) {
-                            player.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPSTORM));
-                        }
-                    }
-                    if (((double) wrldSleeper.counter / (double) world.getPlayers().size()) * 100 >= main.getConfig().getInt("PERCENTAGE_SLEEPING")) {
-                        world.setTime(23470);
-                        players.forEach(p -> {
-                            if (p.isSleeping()) {
-                                p.setStatistic(Statistic.TIME_SINCE_REST, 0); // RESETTING PHANTOM SPAWNING FUCK YEAH
+            if (world.hasStorm() || world.isThundering()) {
+                if (!wrldSleeper.isBeingSkipped) {
+                    if (event.getPlayer().getWorld() == world && event.getBedEnterResult() == BedEnterResult.OK) {
+                        wrldSleeper.counter++;
+                        if (wrldSleeper.oldPlayer != event.getPlayer()) {
+                            for (Player player : players) {
+                                player.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPSTORM));
                             }
-                            p.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SKIPSTORM));
-                        });
-                        wrldSleeper.counter = 0;
-                        isDay = true;
-                        wrldSleeper.oldPlayer = null;
+                        }
+                        if (((double) wrldSleeper.counter / (double) world.getPlayers().size()) * 100 >= main.getConfig().getInt("PERCENTAGE_SLEEPING")) {
+                            world.setTime(23470);
+                            wrldSleeper.isBeingSkipped = true;
+                            world.setStorm(false);
+                            players.forEach(p -> {
+                                if (p.isSleeping()) {
+                                    p.setStatistic(Statistic.TIME_SINCE_REST, 0); // RESETTING PHANTOM SPAWNING FUCK YEAH
+                                }
+                                p.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SKIPSTORM));
+                            });
+                            wrldSleeper.counter = 0;
+                            isDay = true;
+                            wrldSleeper.oldPlayer = null;
+                        }
                     }
                 }
             } else {
