@@ -116,7 +116,7 @@ public class BedListener implements Listener {
     private void onWeatherChange(WeatherChangeEvent event) {
         for (WorldSleepCounter wrldSleeper : wrldSleepers) {
             World world = wrldSleeper.world;
-            if (world == event.getWorld() && wrldSleeper.isBeingSkipped && event.toWeatherState()) {
+            if (world == event.getWorld() && wrldSleeper.isBeingSkipped && !event.toWeatherState()) {
                 wrldSleeper.isBeingSkipped = false;
             }
         }
