@@ -44,7 +44,7 @@ public class CommandSB implements TabExecutor {
                                     pl.sendMessage("Reloading ShadBed config..");
                                 }
                                 if(pl.isSleeping()) {
-                                    LivingEntity le = (LivingEntity) pl;
+                                    LivingEntity le = pl;
                                     if(pl.getGameMode() == GameMode.CREATIVE){
                                         pl.setGameMode(GameMode.SURVIVAL);
                                         le.damage(0);
@@ -53,6 +53,10 @@ public class CommandSB implements TabExecutor {
                                         le.damage(0);
                                     }
                                 }
+                            }
+                            for(WorldSleepCounter wrld : main.bl.wrldSleepers){
+                                wrld.isBeingSkipped = false;
+                                wrld.counter = 0;
                             }
                             main.reloadConfig();
                             break;

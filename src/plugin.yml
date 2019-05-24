@@ -1,6 +1,6 @@
 main: com.shadow2hel.shadbed.ShadBed
 name: ShadBed
-version: 1.1
+version: 1.1.1
 api-version: 1.14
 author: Shadow2hel
 description: An improved plugin for sleep voting.

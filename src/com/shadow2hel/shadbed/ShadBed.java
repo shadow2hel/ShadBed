@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ShadBed extends JavaPlugin {
 
     public FileConfiguration config = this.getConfig();
+    public BedListener bl;
     public World earth;
 
     @Override
@@ -36,7 +37,7 @@ public class ShadBed extends JavaPlugin {
         saveConfig();
         this.getCommand("sb").setExecutor(new CommandSB(this));
         this.getCommand("sbchange").setExecutor(new CommandSBC(this));
-        BedListener bl = new BedListener(this);
+        bl = new BedListener(this);
         getServer().getPluginManager().registerEvents(bl, this);
         new TimeEvent(this, 2000);
         getServer().getPluginManager().registerEvents(new DayListener(bl), this);
