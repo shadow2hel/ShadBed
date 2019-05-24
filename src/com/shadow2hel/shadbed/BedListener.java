@@ -147,6 +147,12 @@ public class BedListener implements Listener {
                         } else {
                             players.forEach(p -> p.sendMessage(this.ShadBedMessage(event.getPlayer(), SleepSetting.LEAVESTORM)));
                         }
+                    } else {
+                        if(!world.hasStorm()) {
+                            event.getPlayer().sendMessage(this.ShadBedMessage(event.getPlayer(), SleepSetting.LEAVENIGHT));
+                        } else {
+                            event.getPlayer().sendMessage(this.ShadBedMessage(event.getPlayer(), SleepSetting.LEAVESTORM));
+                        }
                     }
                 }
                 wrldsleeper.oldPlayer = event.getPlayer();
@@ -167,6 +173,8 @@ public class BedListener implements Listener {
                             for (Player player : players) {
                                 player.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPSTORM));
                             }
+                        } else {
+                            event.getPlayer().sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPSTORM));
                         }
                         int requiredSleepers = (int) Math.floor((main.config.getDouble("PERCENTAGE_SLEEPING") / 100) * (double) world.getPlayers().size());
                         requiredSleepers = (requiredSleepers < 1) ? 1 : requiredSleepers;
@@ -193,6 +201,8 @@ public class BedListener implements Listener {
                             for (Player player : players) {
                                 player.sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPNIGHT));
                             }
+                        } else {
+                            event.getPlayer().sendMessage(ShadBedMessage(event.getPlayer(), SleepSetting.SLEEPNIGHT));
                         }
                         int requiredSleepers = (int) Math.floor((main.config.getDouble("PERCENTAGE_SLEEPING") / 100) * (double) world.getPlayers().size());
                         requiredSleepers = (requiredSleepers < 1) ? 1 : requiredSleepers;
