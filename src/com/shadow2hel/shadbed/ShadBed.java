@@ -1,15 +1,19 @@
 package com.shadow2hel.shadbed;
 
 import com.shadow2hel.shadylibrary.ShadyLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 public class ShadBed extends JavaPlugin {
 
     public FileConfiguration config = this.getConfig();
     public BedListener bl;
     public World earth;
+    public Logger log;
 
     @Override
     public void onDisable() {
@@ -18,6 +22,7 @@ public class ShadBed extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        log = Bukkit.getLogger();
         ShadyLibrary.setPlugin(this);
         for(World world : getServer().getWorlds()){
             if(world.getEnvironment() == World.Environment.NORMAL){

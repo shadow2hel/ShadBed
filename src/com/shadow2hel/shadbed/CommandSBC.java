@@ -53,7 +53,7 @@ public class CommandSBC implements TabExecutor {
                         case "sleepmessagenight":
                             if(words.length!=0){
                                 String textSleep = String.join(" ", words);
-                                main.getConfig().set("sleepMessageNight", textSleep);
+                                main.config.set("sleepMessageNight", textSleep);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -64,7 +64,7 @@ public class CommandSBC implements TabExecutor {
                         case "leavemessagenight":
                             if(words.length!=0){
                                 String textLeave = String.join(" ", words);
-                                main.getConfig().set("leaveMessageNight", textLeave);
+                                main.config.set("leaveMessageNight", textLeave);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -74,7 +74,7 @@ public class CommandSBC implements TabExecutor {
                         case "skipmessagenight":
                             if(words.length!=0){
                                 String textSkip = String.join(" ", words);
-                                main.getConfig().set("skipMessageNight", textSkip);
+                                main.config.set("skipMessageNight", textSkip);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -84,7 +84,7 @@ public class CommandSBC implements TabExecutor {
                         case "sleepmessagestorm":
                             if(words.length!=0){
                                 String textSleep = String.join(" ", words);
-                                main.getConfig().set("sleepMessageStorm", textSleep);
+                                main.config.set("sleepMessageStorm", textSleep);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -95,7 +95,7 @@ public class CommandSBC implements TabExecutor {
                         case "leavemessagestorm":
                             if(words.length!=0){
                                 String textLeave = String.join(" ", words);
-                                main.getConfig().set("leaveMessageStorm", textLeave);
+                                main.config.set("leaveMessageStorm", textLeave);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
@@ -105,7 +105,7 @@ public class CommandSBC implements TabExecutor {
                         case "skipmessagestorm":
                             if(words.length!=0){
                                 String textSkip = String.join(" ", words);
-                                main.getConfig().set("skipMessageStorm", textSkip);
+                                main.config.set("skipMessageStorm", textSkip);
                                 main.config.options().copyDefaults();
                                 main.saveConfig();
                             } else {
