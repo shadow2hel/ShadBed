@@ -1,0 +1,18 @@
+main: shadbed.ShadBed
+name: ShadBed
+version: 1.1.4
+api-version: 1.14
+author: Shadow2hel
+description: An improved plugin for sleep voting.
+commands:
+  sb:
+    description: Show what percentage of players you need to skip the night.
+    usage: /sb
+    permission: ShadBed.sb
+    permission-message: You don't have the ShadBed.sb permission.
+  sbchange:
+    description: Change settings of ShadBed.
+    usage: |
+      /sbchange <sleepmessage|skipmessage|leavemessage|percentage> <message|value> - Change the message or value.
+    permission: ShadBed.sb.change
+    permission-message: You don't have the ShadBed.sb.change permission.

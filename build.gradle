@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+version '1.1.4'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.14.+'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    jar {
+        from {
+            configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+        }
+    }
+
+}
+
+task copyJar(type: Copy) {
+    from 'build/libs'
+    into '../server/plugins'
+}
